@@ -12,7 +12,7 @@ interface Challenge {
 interface ChallengesContextData {
   level: number;
   currentExperience: number;
-  challengesCompleted: number;
+  challengesCompleted: { challenge: string, xp: number, completedAt: string }[];
   activeChallenge: Challenge | null;
   experienceToNextLevel: number;
   isLevelUpModalOpen: boolean
@@ -27,7 +27,7 @@ interface ChallengesProviderProps {
   children: ReactNode;
   level: number
   currentExperience: number
-  challengesCompleted: number
+  challengesCompleted: { challenge: string, xp: number, completedAt: string }[]
 }
 
 export const ChallengesContext = createContext({} as ChallengesContextData);
@@ -35,7 +35,7 @@ export const ChallengesContext = createContext({} as ChallengesContextData);
 export function ChallengesProvider({ children, ...rest }: ChallengesProviderProps) {
   const [level, setLevel] = useState(rest.level); // ?? n existir
   const [currentExperience, setCurrentExperience] = useState(rest.currentExperience);
-  const [challengesCompleted, setChallengesCompleted] = useState(rest.challengesCompleted);
+  const [challengesCompleted, setChallengesCompleted] = useState(rest.challengesCompleted ?? []);
   const [activeChallenge, setActiveChallenge] = useState<Challenge | null>(null);
   const [isLevelUpModalOpen, setIsLevelUpModalOpen] = useState(false)
 
@@ -48,7 +48,8 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
   useEffect(() => {
     Cookies.set("level", String(level))
     Cookies.set("currentExperience", String(currentExperience))
-    Cookies.set("challengesCompleted", String(challengesCompleted))
+    Cookies.set("challengesCompleted", JSON.stringify(challengesCompleted))
+
   }, [level, currentExperience, challengesCompleted])
 
   function levelUp() {
@@ -65,7 +66,9 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
     const challenge = challenges[randomChallengeIndex] as Challenge;
     setActiveChallenge(challenge);
 
-    new Audio("/notification.mp3").play();
+    if (!navigator.userAgent.includes("Safari")) {
+      new Audio("/notification.mp3").play()
+    }
 
     if (Notification.permission === "granted") {
       new Notification("Novo desafio!", {
@@ -83,7 +86,7 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
       return;
     }
 
-    const { amount } = activeChallenge;
+    const { amount, description } = activeChallenge;
     let finalExperience = currentExperience + amount;
 
     if (finalExperience >= experienceToNextLevel) {
@@ -93,7 +96,7 @@ export function ChallengesProvider({ children, ...rest }: ChallengesProviderProp
 
     setCurrentExperience(finalExperience);
     setActiveChallenge(null);
-    setChallengesCompleted(challengesCompleted + 1);
+    setChallengesCompleted(prev => [...prev, { challenge: description, xp: amount, completedAt: new Date().toISOString() }]);
   }
 
   return (

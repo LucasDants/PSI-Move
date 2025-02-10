@@ -21,29 +21,12 @@ export function LevelUpModal() {
           <Link
             className="w-full flex items-center justify-center h-20 text-[#2AA9E0] text-xl font-semibold border-t-2"
             target="__blank"
-            href={`https://twitter.com/intent/tweet?text=Avancei para o nível 2 no MoveIt. http://localhost:3000`}>
+            href={`https://twitter.com/intent/tweet?text=Avancei para o nível ${level} no MoveIt. http://localhost:3000`}>
             Compartilhar no Twitter
             <img src="icons/twitter.svg" alt="twitter-icon" />
           </Link>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-    // <div className="">
-    //   <div className="">
-    //     <header>{level}</header>
-    //     <strong>Parabéns</strong>
-    //     <p>Você alcançou um novo level.</p>
-    //     <button type="button" onClick={closeLevelUpModal}>
-    //       <img src="/icons/close.svg" alt="Fechar modal" />
-    //     </button>
-    //   </div>
-    //   <a
-    //     className=""
-    //     target="__blank"
-    //     href={`https://twitter.com/intent/tweet?text=Avancei para o nível 2 no MoveIt. http://localhost:3000`}>
-    //     Compartilhar no Twitter
-    //     <img src="icons/twitter.svg" alt="twitter-icon" />
-    //   </a>
-    // </div>
   );
 }

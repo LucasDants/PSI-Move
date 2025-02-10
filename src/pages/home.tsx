@@ -17,7 +17,7 @@ interface HomeProps {
   userImage: string
   level: number
   currentExperience: number
-  challengesCompleted: number
+  challengesCompleted: { challenge: string, xp: number, completedAt: string }[]
 }
 
 export default function Home(props: HomeProps) {
@@ -56,7 +56,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       userImage: userImage ?? '',
       level: Number(level ?? 1),
       currentExperience: Number(currentExperience ?? 0),
-      challengesCompleted: Number(challengesCompleted ?? 0),
+      challengesCompleted: JSON.parse(challengesCompleted ?? "[]"),
 
     },
   };
