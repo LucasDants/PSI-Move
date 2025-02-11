@@ -13,17 +13,14 @@ export function ChallengeHistory() {
   return (
     <Dialog >
       <DialogClose />
-      <DialogTrigger>
-
+      <DialogTrigger asChild>
         <Button size="icon">
           <HistoryIcon className='h-[1.5rem] w-[1.5rem]' />
         </Button>
-
       </DialogTrigger>
       <DialogContent className="max-w-[50%]">
         <DialogHeader>
           <DialogTitle className="font-semibold">Desafios Completos</DialogTitle>
-
         </DialogHeader>
         <ScrollArea className='h-[50vh]'>
           <div className='flex flex-1 flex-col gap-4'>
